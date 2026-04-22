@@ -1,0 +1,21 @@
+model Product {
+  id               Int       @id @default(autoincrement())
+  name             String
+  price            String
+  image            String
+  circle           String?
+  categories       String[]
+  authors          String[]
+  tags             String[]
+  publisher        Publisher @relation(fields: [publisherId], references: [id])
+  publication_date DateTime
+  label            String
+  genre            String?
+  type_of_work     String?
+  description      String? // HTML content
+  preview_images   String[]  @default([])
+  url              String    @unique
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime? // Optional (nullable) for migration
+  publisherId      Int
+}
