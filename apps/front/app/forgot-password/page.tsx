@@ -1,11 +1,12 @@
+'use client';
+
 import { useState, type FormEvent } from 'react';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@workspace/ui/components/card';
 import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
 import { Button } from '@workspace/ui/components/button';
-import { api } from '../../lib/http-client';
-import { ThemeRoot } from '../../components/theme-root';
+import { api } from '@/lib/http-client';
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState('');
@@ -18,7 +19,7 @@ export default function ForgotPasswordPage() {
     setError('');
     try {
       const data = await api.post<{ resetToken?: string; message: string }>(
-        '/auth/forgot-password',
+        '/auth/customer/forgot-password',
         { email },
       );
       setSent(true);
@@ -32,8 +33,7 @@ export default function ForgotPasswordPage() {
 
   if (sent) {
     return (
-      <ThemeRoot theme="light">
-        <div className="flex min-h-screen items-center justify-center bg-background">
+      <div className="flex min-h-screen items-center justify-center bg-background">
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
             <CardTitle className="text-2xl">Verifique seu email</CardTitle>
@@ -51,7 +51,7 @@ export default function ForgotPasswordPage() {
                   {resetToken}
                 </code>
                 <Link
-                  to={`/reset-password?token=${encodeURIComponent(resetToken)}`}
+                  href={`/reset-password?token=${encodeURIComponent(resetToken)}`}
                   className="inline-block text-sm underline underline-offset-4 hover:text-primary"
                 >
                   Ir para redefinir senha
@@ -60,22 +60,20 @@ export default function ForgotPasswordPage() {
             )}
           </CardContent>
           <CardFooter className="justify-center">
-            <Link to="/login" className="text-sm underline underline-offset-4 hover:text-primary">
+            <Link href="/login" className="text-sm underline underline-offset-4 hover:text-primary">
               Voltar para o login
             </Link>
           </CardFooter>
         </Card>
-        </div>
-      </ThemeRoot>
+      </div>
     );
   }
 
   return (
-    <ThemeRoot theme="light">
-      <div className="flex min-h-screen items-center justify-center bg-background">
-        <Card className="w-full max-w-sm">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Esqueceu a senha?</CardTitle>
+    <div className="flex min-h-screen items-center justify-center bg-background">
+      <Card className="w-full max-w-sm">
+        <CardHeader className="text-center">
+          <CardTitle className="text-2xl">Esqueceu a senha?</CardTitle>
           <CardDescription>
             Insira seu email e enviaremos um link de redefinição
           </CardDescription>
@@ -102,12 +100,11 @@ export default function ForgotPasswordPage() {
           </form>
         </CardContent>
         <CardFooter className="justify-center">
-          <Link to="/login" className="text-sm underline underline-offset-4 hover:text-primary">
+          <Link href="/login" className="text-sm underline underline-offset-4 hover:text-primary">
             Voltar para o login
           </Link>
         </CardFooter>
       </Card>
-      </div>
-    </ThemeRoot>
+    </div>
   );
 }

@@ -2,7 +2,11 @@ import { Geist, Geist_Mono, Figtree } from "next/font/google"
 
 import "@workspace/ui/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
-import { cn } from "@workspace/ui/lib/utils";
+import { cn } from "@workspace/ui/lib/utils"
+import { ReactQueryProvider } from "@/lib/react-query-provider"
+import { AuthProvider } from "@/lib/auth-context"
+import { TooltipProvider } from "@workspace/ui/components/tooltip"
+import { Toaster } from "@workspace/ui/components/sonner"
 
 const figtreeHeading = Figtree({subsets:['latin'],variable:'--font-heading'});
 
@@ -25,7 +29,16 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable, figtreeHeading.variable)}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <ReactQueryProvider>
+            <AuthProvider>
+              <TooltipProvider>
+                {children}
+              </TooltipProvider>
+              <Toaster />
+            </AuthProvider>
+          </ReactQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   )

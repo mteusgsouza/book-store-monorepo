@@ -10,6 +10,7 @@ import { Button } from "@workspace/ui/components/button"
 import { toast } from "sonner"
 import { useAuth } from "../../contexts/use-auth"
 import { FieldError } from "@workspace/ui/components/field"
+import { ThemeRoot } from "../../components/theme-root"
 
 const registerSchema = z
   .object({
@@ -64,7 +65,8 @@ export default function RegisterPage() {
   })
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <ThemeRoot theme="light">
+      <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Criar conta</CardTitle>
@@ -199,5 +201,6 @@ export default function RegisterPage() {
         </CardFooter>
       </Card>
     </div>
+    </ThemeRoot>
   )
 }

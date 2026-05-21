@@ -9,6 +9,7 @@ import { Label } from "@workspace/ui/components/label"
 import { Button } from "@workspace/ui/components/button"
 import { toast } from "sonner"
 import { useAuth } from "../../contexts/use-auth"
+import { ThemeRoot } from "../../components/theme-root"
 
 const loginSchema = z.object({
   email: z.string().email("Email inválido"),
@@ -45,7 +46,8 @@ export default function LoginPage() {
   })
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
+    <ThemeRoot theme="light">
+      <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Entrar</CardTitle>
@@ -129,5 +131,6 @@ export default function LoginPage() {
         </CardFooter>
       </Card>
     </div>
+    </ThemeRoot>
   )
 }

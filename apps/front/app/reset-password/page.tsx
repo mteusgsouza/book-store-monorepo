@@ -1,14 +1,16 @@
-import { useState, type FormEvent } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
+'use client';
+
+import { useState, type FormEvent, Suspense } from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@workspace/ui/components/card';
 import { Input } from '@workspace/ui/components/input';
 import { Label } from '@workspace/ui/components/label';
 import { Button } from '@workspace/ui/components/button';
-import { api } from '../../lib/http-client';
-import { ThemeRoot } from '../../components/theme-root';
+import { api } from '@/lib/http-client';
 
-export default function ResetPasswordPage() {
-  const [searchParams] = useSearchParams();
+function ResetPasswordForm() {
+  const searchParams = useSearchParams();
   const tokenFromUrl = searchParams.get('token') || '';
   const [token, setToken] = useState(tokenFromUrl);
   const [password, setPassword] = useState('');
@@ -19,7 +21,7 @@ export default function ResetPasswordPage() {
     e.preventDefault();
     setError('');
     try {
-      await api.post('/auth/reset-password', { token, password });
+      await api.post('/auth/customer/reset-password', { token, password });
       setDone(true);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao redefinir senha');
@@ -28,29 +30,26 @@ export default function ResetPasswordPage() {
 
   if (done) {
     return (
-      <ThemeRoot theme="light">
-        <div className="flex min-h-screen items-center justify-center bg-background">
-          <Card className="w-full max-w-sm">
-            <CardHeader className="text-center">
-              <CardTitle className="text-2xl">Senha redefinida</CardTitle>
-              <CardDescription>
-                Sua senha foi alterada com sucesso.
-              </CardDescription>
-            </CardHeader>
-            <CardFooter className="justify-center">
-              <Link to="/login" className="text-sm underline underline-offset-4 hover:text-primary">
-                Ir para o login
-              </Link>
-            </CardFooter>
-          </Card>
-        </div>
-      </ThemeRoot>
+      <div className="flex min-h-screen items-center justify-center bg-background">
+        <Card className="w-full max-w-sm">
+          <CardHeader className="text-center">
+            <CardTitle className="text-2xl">Senha redefinida</CardTitle>
+            <CardDescription>
+              Sua senha foi alterada com sucesso.
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="justify-center">
+            <Link href="/login" className="text-sm underline underline-offset-4 hover:text-primary">
+              Ir para o login
+            </Link>
+          </CardFooter>
+        </Card>
+      </div>
     );
   }
 
   return (
-    <ThemeRoot theme="light">
-      <div className="flex min-h-screen items-center justify-center bg-background">
+    <div className="flex min-h-screen items-center justify-center bg-background">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
           <CardTitle className="text-2xl">Redefinir senha</CardTitle>
@@ -91,12 +90,25 @@ export default function ResetPasswordPage() {
           </form>
         </CardContent>
         <CardFooter className="justify-center">
-          <Link to="/login" className="text-sm underline underline-offset-4 hover:text-primary">
+          <Link href="/login" className="text-sm underline underline-offset-4 hover:text-primary">
             Voltar para o login
           </Link>
         </CardFooter>
       </Card>
-      </div>
-    </ThemeRoot>
+    </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <div className="text-muted-foreground">Carregando...</div>
+        </div>
+      }
+    >
+      <ResetPasswordForm />
+    </Suspense>
   );
 }
