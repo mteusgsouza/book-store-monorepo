@@ -20,7 +20,9 @@
       "PowerShell(New-Item *)",
       "Bash(npx vite *)",
       "Bash(Select-Object FullName, PSIsContainer)",
-      "Bash(Format-Table -AutoSize)"
+      "Bash(Format-Table -AutoSize)",
+      "Bash(npx prisma *)",
+      "PowerShell(docker run *)"
     ]
   }
 }
