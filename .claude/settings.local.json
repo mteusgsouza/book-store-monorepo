@@ -22,7 +22,9 @@
       "Bash(Select-Object FullName, PSIsContainer)",
       "Bash(Format-Table -AutoSize)",
       "Bash(npx prisma *)",
-      "PowerShell(docker run *)"
+      "PowerShell(docker run *)",
+      "Bash(Select-Object FullName, Mode)",
+      "Bash(Select-Object FullName)"
     ]
   }
 }

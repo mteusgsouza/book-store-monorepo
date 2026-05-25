@@ -39,5 +39,6 @@ npm-debug.log*
 *.pem
 .aider*
 DESIGN.md
+
 DESIGN-front.md
 DESIGN-dashboard.md
