@@ -9,6 +9,7 @@ import { PublishersModule } from './publishers/publishers.module';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomerAuthModule } from './customer-auth/customer-auth.module';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { CustomerAuthModule } from './customer-auth/customer-auth.module';
     UsersModule,
     PublishersModule,
     PostsModule,
+    UploadModule,
   ],
   controllers: [AppController],
   providers: [AppService],

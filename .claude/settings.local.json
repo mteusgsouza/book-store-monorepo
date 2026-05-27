@@ -24,7 +24,10 @@
       "Bash(npx prisma *)",
       "PowerShell(docker run *)",
       "Bash(Select-Object FullName, Mode)",
-      "Bash(Select-Object FullName)"
+      "Bash(Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"F:\\\\apps\\\\book-store\\\\apps\\\\front\" -Recurse -Depth 2 | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"F:\\\\apps\\\\book-store\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem -Path \"F:\\\\apps\\\\book-store\\\\apps\\\\front\\\\src\" -Recurse | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"F:\\\\apps\\\\book-store\\\\\", \"\"\\) })",
+      "PowerShell(Get-ChildItem -Path \"F:\\\\apps\\\\book-store\\\\packages\\\\ui\" -Recurse | Select-Object FullName | ForEach-Object { $_.FullName.Replace\\(\"F:\\\\apps\\\\book-store\\\\\", \"\"\\) })"
     ]
   }
 }

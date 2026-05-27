@@ -22,3 +22,8 @@ Este projeto é um monorepo para o sistema bookstore: API Nest.js, Dashboard Vit
 - Não adicione dependências desnecessárias; reutilize as já existentes no monorepo
 - Para adicionar componentes shadcn/ui: `pnpm dlx shadcn@latest add <component> -c apps/web`
 - Importe componentes do pacote `ui`: `import { Button } from "@workspace/ui/components/button"`
+
+To use shadcn in a specific workspace, use the -c flag:
+    shadcn add [component] -c apps/dashboard
+    shadcn add [component] -c apps/front
+    shadcn add [component] -c packages/ui

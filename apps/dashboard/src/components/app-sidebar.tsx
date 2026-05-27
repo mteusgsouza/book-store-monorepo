@@ -1,4 +1,4 @@
-import { IconBooks, IconChartBar, IconDashboard, IconHelp, IconPackage, IconSearch, IconSettings, IconShoppingCart, IconUsers } from "@tabler/icons-react"
+import { IconBooks, IconChartBar, IconDashboard, IconHelp, IconPackage, IconSearch, IconSettings, IconShoppingCart, IconUsers, IconFileText } from "@tabler/icons-react"
 import { SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem, Sidebar, SidebarContent, SidebarFooter } from "@workspace/ui/components/sidebar"
 import * as React from "react"
 import { useNavigate } from "react-router-dom"
@@ -15,9 +15,14 @@ const data = {
       icon: IconDashboard,
     },
     {
-      title: "Books",
-      url: "#",
+      title: "Products",
+      url: "/dashboard/products",
       icon: IconBooks,
+    },
+    {
+      title: "Posts",
+      url: "/dashboard/posts",
+      icon: IconFileText,
     },
     {
       title: "Orders",

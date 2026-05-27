@@ -1,40 +1,49 @@
-import Link from "next/link";
-import { GENRE_LABELS } from "@/types/product";
+"use client";
 
-const GENRE_SLUGS: Record<string, string> = {
-  Fiction: "ficcao",
-  NonFiction: "nao-ficcao",
-  ScienceFiction: "ficcao-cientifica",
-  Fantasy: "fantasia",
-  Mystery: "misterio",
-  Biography: "biografia",
-  History: "historia",
-  Romance: "romance",
-  Thriller: "suspense",
-  SelfHelp: "autoajuda",
-};
+import { useProducts } from "@/hooks/use-products";
+import { GENRE_LABELS } from "@/types/product";
+import { CategoryCard } from "./product-card-compact";
+import { HorizontalScroll } from "./horizontal-scroll";
+import { Skeleton } from "@workspace/ui/components/skeleton";
 
 export function CategoriesSection() {
-  return (
-    <section id="categorias" className="py-16 md:py-20 lg:py-24 bg-surface">
-      <div className="mx-auto max-w-[1280px] px-8">
-        <h2 className="font-heading text-3xl md:text-4xl font-semibold leading-tight tracking-[-0.005em] text-ink">
-          Categorias
-        </h2>
-        <p className="mt-3 max-w-lg text-lg leading-relaxed text-steel">
-          Navegue por generos e encontre o que mais combina com voce.
-        </p>
-        <div className="mt-8 flex flex-wrap gap-3">
-          {Object.entries(GENRE_LABELS).map(([genre, label]) => (
-            <Link
-              key={genre}
-              href={`/categorias/${GENRE_SLUGS[genre]}`}
-              className="inline-flex items-center rounded-full border border-hairline bg-canvas px-4 py-2 text-sm font-medium text-steel hover:bg-ink hover:text-on-dark hover:border-ink transition-colors"
-            >
-              {label}
-            </Link>
-          ))}
+  const { data: products, isLoading } = useProducts();
+
+  if (isLoading) {
+    return (
+      <section className="py-16 md:py-20 lg:py-24 bg-surface">
+        <div className="mx-auto max-w-[1280px] px-8">
+          <HorizontalScroll title="Categorias" href="/categorias">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <Skeleton key={i} className="shrink-0 w-[200px] aspect-[2/3] rounded-xl" />
+            ))}
+          </HorizontalScroll>
         </div>
+      </section>
+    );
+  }
+
+  if (!products || products.length === 0) return null;
+
+  const genreEntries = Object.entries(GENRE_LABELS);
+
+  const latestPerGenre = genreEntries
+    .map(([genre, label]) => {
+      const latest = products.find((p) => p.genre === genre);
+      return latest ? { genre, label, product: latest } : null;
+    })
+    .filter((entry): entry is { genre: string; label: string; product: typeof products[number] } => entry !== null);
+
+  if (latestPerGenre.length === 0) return null;
+
+  return (
+    <section className="py-16 md:py-20 lg:py-24 bg-surface">
+      <div className="mx-auto max-w-[1280px] px-8">
+        <HorizontalScroll title="Categorias" href="/categorias">
+          {latestPerGenre.map(({ genre, label, product }) => (
+            <CategoryCard key={genre} genre={genre} label={label} product={product} />
+          ))}
+        </HorizontalScroll>
       </div>
     </section>
   );
