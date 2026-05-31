@@ -7,6 +7,7 @@ import { cn } from "@workspace/ui/lib/utils"
 import { ReactQueryProvider } from "@/lib/react-query-provider"
 import { AuthProvider } from "@/lib/auth-context"
 import { CartProvider } from "@/lib/cart-context"
+import { CheckoutProvider } from "@/lib/checkout-context"
 import { TooltipProvider } from "@workspace/ui/components/tooltip"
 import { Toaster } from "@workspace/ui/components/sonner"
 
@@ -35,9 +36,11 @@ export default function RootLayout({
           <ReactQueryProvider>
             <AuthProvider>
               <CartProvider>
-                <TooltipProvider>
-                  {children}
-                </TooltipProvider>
+                <CheckoutProvider>
+                  <TooltipProvider>
+                    {children}
+                  </TooltipProvider>
+                </CheckoutProvider>
               </CartProvider>
               <Toaster />
             </AuthProvider>

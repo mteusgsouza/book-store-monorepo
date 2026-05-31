@@ -5,8 +5,8 @@ model Order {
     product         Product   @relation(fields: [productId], references: [id])
     productId       Int
     quantity        Int
-    totalPrice      String
-    discount        String?
+    totalPrice      Int
+    discount        Int?
     status          OrderStatus @default(PENDING)
     payment         Payment?
     createdAt       DateTime    @default(now())
@@ -27,7 +27,7 @@ model Payment {
     orderId     Int      @unique
     method      PaymentMethod
     status      PaymentStatus @default(PENDING)
-    amount      String
+    amount      Int
     createdAt   DateTime      @default(now())
     updatedAt   DateTime?     // Optional (nullable) for migration
 }
@@ -38,6 +38,8 @@ enum PaymentMethod {
     STRIPE
     APPLE_PAY
     GOOGLE_PAY
+    PIX
+    BOLETO
 }
 
 enum PaymentStatus {

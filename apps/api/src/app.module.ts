@@ -10,6 +10,8 @@ import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { CustomerAuthModule } from './customer-auth/customer-auth.module';
 import { UploadModule } from './upload/upload.module';
+import { OrdersModule } from './orders/orders.module';
+import { CustomersModule } from './customers/customers.module';
 
 @Module({
   imports: [
@@ -22,6 +24,8 @@ import { UploadModule } from './upload/upload.module';
     PublishersModule,
     PostsModule,
     UploadModule,
+    OrdersModule,
+    CustomersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
