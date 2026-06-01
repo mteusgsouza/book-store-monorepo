@@ -35,3 +35,4 @@ jobs:
         run: pnpm --filter @workspace/database db:migrate:deploy
         env:
           DATABASE_URL_UNPOOLED: ${{ secrets.PROD_DATABASE_URL_UNPOOLED }}
+          DATABASE_SHADOW_URL: ${{ secrets.PROD_DATABASE_URL_UNPOOLED }}
