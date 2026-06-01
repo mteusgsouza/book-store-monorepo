@@ -8,6 +8,8 @@ export default defineConfig({
   },
   datasource: {
     url: env("DATABASE_URL_UNPOOLED"),
-    shadowDatabaseUrl: env("DATABASE_SHADOW_URL"),
+    ...(process.env.DATABASE_SHADOW_URL
+      ? { shadowDatabaseUrl: env("DATABASE_SHADOW_URL") }
+      : {}),
   },
 })
