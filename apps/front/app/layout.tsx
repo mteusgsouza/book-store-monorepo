@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono, Figtree } from "next/font/google"
 
 import "@workspace/ui/globals.css"
-import "@/app/brand.css"
+import "./brand.css";
 import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@workspace/ui/lib/utils"
 import { ReactQueryProvider } from "@/lib/react-query-provider"

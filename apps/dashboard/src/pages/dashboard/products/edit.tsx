@@ -6,7 +6,7 @@ import { ProductForm } from "../../../components/product-form";
 interface ProductFull {
   id: number;
   name: string;
-  price: string;
+  price: number;
   image: string;
   categories: string[];
   authors: string[];
@@ -52,5 +52,5 @@ export default function ProductEditPage() {
       }
     : null;
 
-  return <ProductForm product={formData} isLoading={isLoading} />;
+  return <ProductForm key={id} product={formData} isLoading={isLoading} />;
 }

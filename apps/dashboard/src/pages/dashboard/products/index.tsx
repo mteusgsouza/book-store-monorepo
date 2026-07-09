@@ -101,7 +101,7 @@ export default function ProductsPage() {
         </Button>
       </div>
 
-      <div className="rounded-lg border border-hairline bg-canvas overflow-hidden">
+      <div className="rounded-lg border bg-canvas overflow-hidden">
         <Table>
           <TableHeader>
             <TableRow>

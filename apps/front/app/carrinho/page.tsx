@@ -29,7 +29,7 @@ function CartItemsSkeleton() {
 }
 
 export default function CartPage() {
-  const { items, itemCount } = useCart();
+  const { items, itemCount, hydrated } = useCart();
 
   const hasItems = items.length > 0;
 
@@ -43,14 +43,18 @@ export default function CartPage() {
             <h1 className="font-heading text-3xl md:text-4xl font-semibold leading-tight tracking-[-0.005em] text-ink">
               Carrinho
             </h1>
-            {hasItems && (
+            {hydrated && hasItems && (
               <span className="text-steel text-lg">
                 ({itemCount} {itemCount === 1 ? "item" : "itens"})
               </span>
             )}
           </div>
 
-          {!hasItems ? (
+          {!hydrated ? (
+            <div className="mt-10">
+              <CartItemsSkeleton />
+            </div>
+          ) : !hasItems ? (
             <div className="mt-20 flex flex-col items-center justify-center text-center">
               <ShoppingCart className="h-16 w-16 text-stone" />
               <h2 className="mt-6 text-xl font-semibold text-ink">
@@ -66,7 +70,7 @@ export default function CartPage() {
           ) : (
             <div className="mt-10 flex flex-col gap-10 lg:flex-row">
               <div className="flex-1">
-                <div className="rounded-xl border border-hairline bg-surface p-6">
+                <div className="rounded-xl border border-hairline bg-surface p-6 flex flex-col gap-6">
                   {items.map((item, index) => (
                     <div key={item.product.id}>
                       <CartItemCard item={item} />

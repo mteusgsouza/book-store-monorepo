@@ -15,6 +15,7 @@ interface CartContextValue {
   updateQuantity: (productId: number, quantity: number) => void;
   clearCart: () => void;
   itemCount: number;
+  hydrated: boolean;
 }
 
 const CartContext = createContext<CartContextValue | null>(null);
@@ -36,15 +37,22 @@ function loadCart(): CartItem[] {
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
-  const [items, setItems] = useState<CartItem[]>(loadCart);
+  const [items, setItems] = useState<CartItem[]>([]);
+  const [hydrated, setHydrated] = useState(false);
 
   useEffect(() => {
+    setItems(loadCart());
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated) return;
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
     } catch {
       // storage full or unavailable
     }
-  }, [items]);
+  }, [items, hydrated]);
 
   const addItem = useCallback((product: Product, quantity = 1) => {
     setItems((prev) => {
@@ -84,7 +92,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   return (
     <CartContext.Provider
-      value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount }}
+      value={{ items, addItem, removeItem, updateQuantity, clearCart, itemCount, hydrated }}
     >
       {children}
     </CartContext.Provider>

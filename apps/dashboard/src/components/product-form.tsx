@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { useForm } from "@tanstack/react-form"
 import { z } from "zod"
@@ -58,7 +58,7 @@ type ProductFormValues = z.infer<typeof productSchema>
 interface ProductFormData {
   id: number
   name: string
-  price: string
+  price: number
   image: string
   categories: string[]
   authors: string[]
@@ -85,16 +85,6 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
 
   const [previewImages, setPreviewImages] = useState<string[]>(product?.preview_images ?? [])
   const [previewVideos, setPreviewVideos] = useState<string[]>(product?.preview_videos?.map((v) => v.url) ?? [])
-
-  useEffect(() => {
-    if (product) {
-      setPreviewImages(product.preview_images ?? [])
-      setPreviewVideos(product.preview_videos?.map((v) => v.url) ?? [])
-    } else {
-      setPreviewImages([])
-      setPreviewVideos([])
-    }
-  }, [product])
 
   function addPreviewImage() {
     setPreviewImages((prev) => [...prev, ""])
@@ -123,7 +113,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
   const form = useForm({
     defaultValues: {
       name: product?.name ?? "",
-      price: product?.price ?? "",
+      price: product?.price ? (product.price / 100).toFixed(2) : "",
       image: product?.image ?? "",
       categories: product?.categories?.join(", ") ?? "",
       authors: product?.authors?.join(", ") ?? "",
@@ -144,7 +134,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
             const key = e.path[0] as string
             if (!errors[key]) errors[key] = e.message
           })
-          return errors as any
+          return errors
         }
         return undefined
       },
@@ -152,7 +142,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
     onSubmit: async ({ value }) => {
       const payload = {
         name: value.name,
-        price: value.price,
+        price: Math.round(parseFloat(value.price) * 100),
         image: value.image,
         categories: value.categories
           ? value.categories
@@ -196,24 +186,14 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
         toast.error((err as Error).message)
       }
     },
+    onSubmitInvalid: ({ value }) => {
+      const result = productSchema.safeParse(value)
+      if (!result.success) {
+        const first = result.error.errors[0]
+        toast.error(`Campo "${String(first.path[0])}": ${first.message}`)
+      }
+    },
   })
-
-  useEffect(() => {
-    if (product) {
-      form.setFieldValue("name", product.name)
-      form.setFieldValue("price", product.price)
-      form.setFieldValue("image", product.image)
-      form.setFieldValue("categories", product.categories.join(", "))
-      form.setFieldValue("authors", product.authors.join(", "))
-      form.setFieldValue("tags", product.tags.join(", "))
-      form.setFieldValue("genre", product.genre ?? "")
-      form.setFieldValue("type_of_work", product.type_of_work ?? "")
-      form.setFieldValue("publisherId", product.publisherId.toString())
-      form.setFieldValue("publication_date", product.publication_date?.split("T")[0] ?? "")
-      form.setFieldValue("description", product.description ?? "")
-      form.setFieldValue("url", product.url)
-    }
-  }, [product])
 
   const isEdit = !!product
 
@@ -266,7 +246,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
                 <form.Field name="price">
                   {(field) => (
                     <div className="space-y-1">
-                      <Label htmlFor="price">Preco</Label>
+                      <Label htmlFor="price">Preço</Label>
                       <Input
                         id="price"
                         value={field.state.value}
@@ -307,10 +287,10 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
                 <form.Field name="genre">
                   {(field) => (
                     <div className="space-y-1">
-                      <Label htmlFor="genre">Genero</Label>
+                      <Label htmlFor="genre">Gênero</Label>
                       <Select value={field.state.value} onValueChange={(v) => field.handleChange(v)}>
                         <SelectTrigger id="genre">
-                          <SelectValue placeholder="Selecionar genero" />
+                          <SelectValue placeholder="Selecionar gênero" />
                         </SelectTrigger>
                         <SelectContent>
                           {GENRE_OPTIONS.map((g) => (
@@ -423,7 +403,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
               <form.Field name="description">
                 {(field) => (
                   <div className="space-y-1">
-                    <Label htmlFor="description">Descricao</Label>
+                    <Label htmlFor="description">Descrição</Label>
                     <Textarea
                       id="description"
                       rows={6}
@@ -435,7 +415,7 @@ export function ProductForm({ product, isLoading }: ProductFormProps) {
                 )}
               </form.Field>
 
-              <div className="border-hairline flex justify-end gap-4 border-t pt-4">
+              <div className="border-border flex justify-end gap-4 border-t pt-4">
                 <Button type="button" variant="outline" onClick={() => navigate("/dashboard/products")}>
                   Cancelar
                 </Button>

@@ -7,8 +7,9 @@ export class CreateProductDto {
   @IsString()
   name: string;
 
-  @IsString()
-  price: string;
+  @IsInt()
+  @Type(() => Number)
+  price: number;
 
   @IsString()
   image: string;

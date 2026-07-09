@@ -59,16 +59,17 @@ export function CartItemCard({ item }: { item: CartItem }) {
         </div>
 
         <div className="flex items-center justify-between mt-2">
-          <div className="flex items-center gap-1 rounded-lg border border-hairline bg-surface p-0.5">
+          <div className="flex items-center gap-1 rounded-lg border border-hairline bg-canvas p-0.5">
             <Button
               variant="ghost"
               size="icon-xs"
               onClick={() => updateQuantity(product.id, quantity - 1)}
               aria-label="Diminuir quantidade"
+              className="rounded-full text-ink hover:bg-surface"
             >
               <Minus className="h-3 w-3" />
             </Button>
-            <span className="min-w-[2rem] text-center text-sm font-medium tabular-nums">
+            <span className="min-w-[2rem] text-center text-sm font-medium tabular-nums text-ink">
               {quantity}
             </span>
             <Button
@@ -76,6 +77,7 @@ export function CartItemCard({ item }: { item: CartItem }) {
               size="icon-xs"
               onClick={() => updateQuantity(product.id, quantity + 1)}
               aria-label="Aumentar quantidade"
+              className="rounded-full text-ink hover:bg-surface"
             >
               <Plus className="h-3 w-3" />
             </Button>
@@ -85,7 +87,7 @@ export function CartItemCard({ item }: { item: CartItem }) {
             variant="ghost"
             size="sm"
             onClick={() => removeItem(product.id)}
-            className="text-steel hover:text-brand-error"
+            className="text-ink hover:text-brand-error"
           >
             <Trash2 className="h-4 w-4" />
             <span className="ml-1 hidden sm:inline">Remover</span>

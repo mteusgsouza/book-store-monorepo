@@ -21,7 +21,7 @@ export class OrdersService {
           throw new NotFoundException(`Product #${item.productId} not found`);
         }
 
-        const totalPrice = (parseFloat(product.price) * item.quantity).toFixed(2);
+        const totalPrice = product.price * item.quantity;
 
         const order = await tx.order.create({
           data: {
@@ -37,9 +37,10 @@ export class OrdersService {
       }
 
       if (createdOrders.length > 0) {
-        const totalAmount = createdOrders
-          .reduce((sum, o) => sum + parseFloat(o.totalPrice), 0)
-          .toFixed(2);
+        const totalAmount = createdOrders.reduce(
+          (sum, o) => sum + o.totalPrice,
+          0,
+        );
 
         await tx.payment.create({
           data: {

@@ -29,16 +29,16 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const queryClient = useQueryClient()
 
   const [accessToken, setAccessToken] = useState<string | null>(
-    () => sessionStorage.getItem("accessToken"),
+    () => localStorage.getItem("accessToken"),
   )
 
   const httpClient = useMemo(
     () =>
       new HttpClient({
         baseUrl: API_URL,
-        getAccessToken: () => sessionStorage.getItem("accessToken"),
+        getAccessToken: () => localStorage.getItem("accessToken"),
         onUnauthorized: () => {
-          sessionStorage.removeItem("accessToken")
+          localStorage.removeItem("accessToken")
           localStorage.removeItem("wasLoggedIn")
           setAccessToken(null)
           queryClient.setQueryData(["auth", "me"], null)
@@ -67,7 +67,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
         throw new Error("Refresh failed")
       }
       const data = (await response.json()) as { accessToken: string; user: User }
-      sessionStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("wasLoggedIn", "1")
       setAccessToken(data.accessToken)
       queryClient.setQueryData(["auth", "me"], data.user)
@@ -82,7 +82,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
     mutationFn: (body: { email: string; password: string }) =>
       httpClient.post<{ accessToken: string; user: User }>("/auth/login", body),
     onSuccess: (data) => {
-      sessionStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("wasLoggedIn", "1")
       setAccessToken(data.accessToken)
       queryClient.setQueryData(["auth", "me"], data.user)
@@ -97,7 +97,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
       lastName?: string
     }) => httpClient.post<{ accessToken: string; user: User }>("/auth/register", body),
     onSuccess: (data) => {
-      sessionStorage.setItem("accessToken", data.accessToken)
+      localStorage.setItem("accessToken", data.accessToken)
       localStorage.setItem("wasLoggedIn", "1")
       setAccessToken(data.accessToken)
       queryClient.setQueryData(["auth", "me"], data.user)
@@ -107,7 +107,7 @@ function AuthProvider({ children }: { children: ReactNode }) {
   const logoutMutation = useMutation({
     mutationFn: () => httpClient.post("/auth/logout"),
     onSuccess: () => {
-      sessionStorage.removeItem("accessToken")
+      localStorage.removeItem("accessToken")
       localStorage.removeItem("wasLoggedIn")
       setAccessToken(null)
       queryClient.removeQueries()

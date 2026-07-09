@@ -1,4 +1,8 @@
-@theme inline {
+/* Brand Design System — CSS variable override layer */
+/* Loaded AFTER @workspace/ui/globals.css to define brand token values */
+
+/* ── Brand Color Tokens ──────────────────────────────────── */
+:root {
   --color-brand-green: #00d4a4;
   --color-brand-green-deep: #00b48a;
   --color-brand-green-soft: #7cebcb;
@@ -22,13 +26,10 @@
   --color-on-dark: #ffffff;
   --color-on-dark-muted: #b3b3b3;
   --radius-xs: 0.25rem;
-  --radius-sm: 0.375rem;
-  --radius-md: 0.5rem;
-  --radius-lg: 0.75rem;
-  --radius-xl: 1rem;
   --radius-xxl: 1.5rem;
 }
 
+/* ── Dark Mode Overrides ─────────────────────────────────── */
 .dark {
   --color-canvas: #0a0a0a;
   --color-surface: #1a1a1a;
